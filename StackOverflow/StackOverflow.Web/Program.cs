@@ -1,11 +1,24 @@
+using log4net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StackOverflow.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
+
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+
+//Configure Log4Net
+builder.WebHost.ConfigureLogging(builder =>
+{
+    builder.AddLog4Net("log4net.config");
+});
+var log = LogManager.GetLogger(typeof(Program));
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -15,7 +28,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
-
+log.Info("Application Starting up");
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

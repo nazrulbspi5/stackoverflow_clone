@@ -8,12 +8,8 @@ using Autofac.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 
 //Configure Log4Net
 builder.WebHost.ConfigureLogging(builder =>

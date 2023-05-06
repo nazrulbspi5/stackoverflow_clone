@@ -4,18 +4,17 @@ namespace StackOverflow.DAL.UnitOfWorks;
 
 public class UnitOfWork : IUnitOfWork
 {
-
     private static readonly ISessionFactory _sessionFactory;
     private ITransaction _transaction;
-    public ISession Session { get; private set; }
 
-    protected ISession _session;
+    public ISession _session;
 
-    public UnitOfWork(ISessionFactory sessionFactory)
+    public UnitOfWork(ISession session)
     {
-        _session = _sessionFactory.OpenSession();
+        _session = session;
+        //_session = _sessionFactory.OpenSession();
     }
-   
+
     public void Flush()
     {
         _session.Flush();
@@ -23,7 +22,7 @@ public class UnitOfWork : IUnitOfWork
 
     public void BeginTransaction()
     {
-        _transaction = Session.BeginTransaction();
+        _transaction = _session.BeginTransaction();
     }
 
     public void Commit()
@@ -42,7 +41,7 @@ public class UnitOfWork : IUnitOfWork
         }
         finally
         {
-            Session.Dispose();
+            _session.Dispose();
         }
     }
 
@@ -55,7 +54,7 @@ public class UnitOfWork : IUnitOfWork
         }
         finally
         {
-            Session.Dispose();
+            _session.Dispose();
         }
     }
 

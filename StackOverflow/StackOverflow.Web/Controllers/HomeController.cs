@@ -16,6 +16,7 @@ namespace StackOverflow.Web.Controllers
         public IActionResult Index()
         {
             _logger.LogInformation("Application Started.");
+           
             return View();
         }
 

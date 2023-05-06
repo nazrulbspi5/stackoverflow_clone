@@ -2,15 +2,14 @@ using log4net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StackOverflow.Web.Data;
+using StackOverflow.Web;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-
-
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
 
 //Configure Log4Net
 builder.WebHost.ConfigureLogging(builder =>
@@ -18,6 +17,13 @@ builder.WebHost.ConfigureLogging(builder =>
     builder.AddLog4Net("log4net.config");
 });
 var log = LogManager.GetLogger(typeof(Program));
+
+//Autofac Configuration Autofac
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+{
+    containerBuilder.RegisterModule(new WebModule());
+});
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));

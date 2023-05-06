@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StackOverflow.DAL\StackOverflow.DAL.csproj" />
     <ProjectReference Include="..\StackOverflow.Services\StackOverflow.Services.csproj" />
   </ItemGroup>
 

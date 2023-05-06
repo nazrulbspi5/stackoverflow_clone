@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverflow.DAL.NHibernate;
 
 namespace StackOverflow.DAL
 {
@@ -12,10 +13,8 @@ namespace StackOverflow.DAL
 
         protected override void Load(ContainerBuilder builder)
         {
-            //For Migration
-            builder.RegisterType<ApplicationDbContext>().AsSelf().
+            builder.RegisterType<SessionManagerFactory>().AsSelf().
                 WithParameter("connectionString", _connectionString).
-               //WithParameter("migrationAssemblyName", _migrationAssemblyName).
                 InstancePerLifetimeScope();
             base.Load(builder);
         }

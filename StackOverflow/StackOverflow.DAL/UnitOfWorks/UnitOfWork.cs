@@ -11,11 +11,11 @@ public class UnitOfWork : IUnitOfWork
 
     protected ISession _session;
 
-    public UnitOfWork()
+    public UnitOfWork(ISessionFactory sessionFactory)
     {
         _session = _sessionFactory.OpenSession();
     }
-
+   
     public void Flush()
     {
         _session.Flush();
@@ -30,13 +30,11 @@ public class UnitOfWork : IUnitOfWork
     {
         try
         {
-            // commit transaction if there is one active
             if (_transaction != null && _transaction.IsActive)
                 _transaction.Commit();
         }
         catch
         {
-            // rollback if there was an exception
             if (_transaction != null && _transaction.IsActive)
                 _transaction.Rollback();
 
@@ -50,7 +48,6 @@ public class UnitOfWork : IUnitOfWork
 
     public void RollBack()
     {
-
         try
         {
             if (_transaction != null && _transaction.IsActive)
@@ -60,6 +57,18 @@ public class UnitOfWork : IUnitOfWork
         {
             Session.Dispose();
         }
-    }  
-   
+    }
+
+    public void Dispose()
+    {
+        if (_transaction != null)
+        {
+            Commit();
+        }
+        if (_session != null)
+        {
+            Flush();
+        }
+    }
+
 }

@@ -31,7 +31,7 @@ namespace StackOverflow.DAL.Repositories
         {
             _session.SaveOrUpdate(entity);
         }
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> FindAll()
         {
             return _session.Query<TEntity>().ToList();
         }

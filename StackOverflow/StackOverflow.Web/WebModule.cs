@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using StackOverflow.Web.Models;
 
 namespace StackOverflow.Web
 {
@@ -6,7 +7,6 @@ namespace StackOverflow.Web
     {
         protected override void Load(ContainerBuilder builder)
         {
-           
             base.Load(builder);
         }
     }

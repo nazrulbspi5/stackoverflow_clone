@@ -33,8 +33,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 });
 
 //AutoMapper
-//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 //builder.Services.AddScoped(x => new SessionManagerFactory(connectionString).OpenSession());
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()

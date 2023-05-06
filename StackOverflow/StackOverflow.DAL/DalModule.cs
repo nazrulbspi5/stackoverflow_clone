@@ -18,7 +18,7 @@ namespace StackOverflow.DAL
             builder.RegisterType<SessionManagerFactory>().AsSelf().
                 WithParameter("connectionString", _connectionString).
                 InstancePerLifetimeScope();
-            builder.RegisterType<ApplicationUser>().AsSelf();
+            //builder.RegisterType<ApplicationUser>().AsSelf();
 
             builder.RegisterType<ApplicationUnitOfWork>().As<IApplicationUnitOfWork>()
            .InstancePerLifetimeScope();

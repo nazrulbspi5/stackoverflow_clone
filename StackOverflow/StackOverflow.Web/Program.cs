@@ -1,15 +1,15 @@
+using Autofac;
 using log4net;
+using StackOverflow.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using StackOverflow.Web.Data;
-using StackOverflow.Web;
-using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using StackOverflow.DAL;
 using StackOverflow.DAL.Entities.Authentication;
 using StackOverflow.Services.Authentication;
 using FluentNHibernate.AspNetCore.Identity;
 using StackOverflow.Services;
+using StackOverflow.DAL.NHibernate;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,26 +28,21 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterModule(new WebModule());
-    containerBuilder.RegisterModule(new DalModule(connectionString));
-    containerBuilder.RegisterModule(new ServiceModule(connectionString));
+   // containerBuilder.RegisterModule(new DalModule(connectionString));
+    //containerBuilder.RegisterModule(new ServiceModule(connectionString));
 });
 
 //AutoMapper
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//    options.UseSqlServer(connectionString));
-//builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ApplicationDbContext>();
+//builder.Services.AddScoped(x => new SessionManagerFactory(connectionString).OpenSession());
 
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
       .ExtendConfiguration()
       .AddNHibernateStores(t => t.SetSessionAutoFlush(true))
-     .AddUserManager<ApplicationUserManager>()
-     .AddRoleManager<ApplicationRoleManager>()
-     .AddSignInManager<ApplicationSignInManager>()
+     //.AddUserManager<ApplicationUserManager>()
+    // .AddRoleManager<ApplicationRoleManager>()
+     //.AddSignInManager<ApplicationSignInManager>()
      .AddDefaultTokenProviders();
 
 

@@ -6,6 +6,10 @@ using StackOverflow.Web;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using StackOverflow.DAL;
+using StackOverflow.DAL.Entities.Authentication;
+using StackOverflow.Services.Authentication;
+using FluentNHibernate.AspNetCore.Identity;
+using StackOverflow.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +23,13 @@ builder.WebHost.ConfigureLogging(builder =>
 });
 var log = LogManager.GetLogger(typeof(Program));
 
-//Autofac Configuration Autofac
+//Autofac Configuration
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 {
     containerBuilder.RegisterModule(new WebModule());
     containerBuilder.RegisterModule(new DalModule(connectionString));
+    containerBuilder.RegisterModule(new ServiceModule(connectionString));
 });
 
 //AutoMapper
@@ -34,8 +39,48 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //    options.UseSqlServer(connectionString));
 //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+      .ExtendConfiguration()
+      .AddNHibernateStores(t => t.SetSessionAutoFlush(true))
+     .AddUserManager<ApplicationUserManager>()
+     .AddRoleManager<ApplicationRoleManager>()
+     .AddSignInManager<ApplicationSignInManager>()
+     .AddDefaultTokenProviders();
+
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    // Password settings.
+    options.Password.RequireDigit = true;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 6;
+    options.Password.RequiredUniqueChars = 0;
+
+    // Lockout settings.
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+
+    // User settings.
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+    options.User.RequireUniqueEmail = true;
+
+    // SignIn settings
+    options.SignIn.RequireConfirmedAccount = false;
+});
+
+//builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+//    .ExtendConfiguration()
+//    .AddNHibernateStores(t => t.SetSessionAutoFlush(true))
+//    .AddUserManager<ApplicationUserManager>()
+//    .AddSignInManager<ApplicationSignInManager>()
+//    .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
 
@@ -64,6 +109,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+//app.MapRazorPages();
 
 app.Run();

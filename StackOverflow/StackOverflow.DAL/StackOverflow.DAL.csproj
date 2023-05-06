@@ -12,8 +12,4 @@
 		<PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.2" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Entities\Authentication\" />
-	</ItemGroup>
 </Project>

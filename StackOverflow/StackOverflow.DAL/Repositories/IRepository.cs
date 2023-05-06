@@ -8,7 +8,7 @@ namespace StackOverflow.DAL.Repositories
         void Add(TEntity entity);
         TEntity Get(TKey id);
         void Update(TEntity entity);  
-        IEnumerable<TEntity> GetAll();
+        IEnumerable<TEntity> FindAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         Task<(IList<TEntity> data, int total, int totalDisplay)> GetDynamicAsync(
             Expression<Func<TEntity, bool>> filter = null!, string orderBy = null!, int pageIndex = 1, int pageSize = 10);

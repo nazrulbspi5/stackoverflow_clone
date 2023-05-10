@@ -17,20 +17,20 @@ public class AccountService : IAccountService
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly RoleManager<ApplicationRole> _userRoleManager;
     private ISession _session;
-    private readonly IActionContextAccessor _contextAccessor;
+    //private readonly IActionContextAccessor _contextAccessor;
     private readonly IMapper _mapper;
 
     public AccountService(UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         RoleManager<ApplicationRole> userRoleManager,
         IUrlHelperFactory urlHelperFactory,
-        IActionContextAccessor contextAccessor,
+        //IActionContextAccessor contextAccessor,
         IMapper mapper, ISession session)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userRoleManager = userRoleManager;
-        _contextAccessor = contextAccessor;
+       // _contextAccessor = contextAccessor;
         _mapper = mapper;
         _session = session;
     }
@@ -51,21 +51,21 @@ public class AccountService : IAccountService
         return await _userManager.FindByEmailAsync(email);
     }
 
-    public async Task<ApplicationUser> GetUserAsync()
-    {
-        return await _userManager.FindByIdAsync(GetUserId());
-    }
+    //public async Task<ApplicationUser> GetUserAsync()
+    //{
+    //    return await _userManager.FindByIdAsync(GetUserId());
+    //}
 
-    public string GetUserId()
-    {
-        return GetUser!.FindFirstValue(ClaimTypes.NameIdentifier);
-    }
-    public ClaimsPrincipal GetUser => _contextAccessor.ActionContext!.HttpContext.User;
+    //public string GetUserId()
+    //{
+    //    return GetUser!.FindFirstValue(ClaimTypes.NameIdentifier);
+    //}
+   // public ClaimsPrincipal GetUser => _contextAccessor.ActionContext!.HttpContext.User;
 
-    public bool IsAuthenticated()
-    {
-        return GetUser!.Identity!.IsAuthenticated;
-    }
+    //public bool IsAuthenticated()
+    //{
+    //    return GetUser!.Identity!.IsAuthenticated;
+    //}
 
     public async Task<SignInResult> PasswordSignInAsync(ApplicationUserBO user)
     {

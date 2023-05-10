@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Authentication;
-using StackOverflow.Web.Models;
+using Microsoft.AspNetCore.Identity;
+using StackOverflow.Services.BusinessObjects.Authentication;
+using StackOverflow.Services.Services.Authentication;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevTrack.Web.Models
+namespace StackOverflow.Web.Models
 {
     public class LoginModel : BaseModel
     {
@@ -19,26 +21,36 @@ namespace DevTrack.Web.Models
         public string Token { get; set; }
         public IList<AuthenticationScheme>? ExternalLogins { get; set; }
         public string ReturnUrl { get; set; }
-
+        private IAccountService _accountService;
         public LoginModel()
         {
         }
 
-        public LoginModel(IHttpContextAccessor httpContextAccessor)
-            : base(httpContextAccessor)
+        public LoginModel(IAccountService accountService)
+            : base()
         {
+            _accountService = accountService;
         }
 
         public override void ResolveDependency(ILifetimeScope scope)
         {
             base.ResolveDependency(scope);
+            _accountService = scope.Resolve<IAccountService>();
         }
 
 
-        //public Task<(SignInResult Result, Status Status)> LoginUserAsync()
-        //{
-        //    return _accountService.UserLoginAsync(Email, Password, RememberMe);
-        //}
+        public async Task<SignInResult> PasswordSignInAsync()
+        {
+            var user = new ApplicationUser
+            {
+               
+                UserName = Email,
+                Password = Password,
+                RememberMe = RememberMe
+            };
+
+            return await _accountService.PasswordSignInAsync(user);
+        }
 
         //public async Task LogoutUserAsync()
         //{

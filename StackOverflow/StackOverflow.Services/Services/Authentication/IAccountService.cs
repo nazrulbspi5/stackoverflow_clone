@@ -8,11 +8,11 @@ public interface IAccountService
 {
     Task<IdentityResult> CreateUserAsync(ApplicationUserBO user);
     Task<ApplicationUser> GetUserByEmailAsync(string email);
-    Task<ApplicationUser> GetUserAsync();
+    //Task<ApplicationUser> GetUserAsync();
     Task<SignInResult> PasswordSignInAsync(ApplicationUserBO user);
    
     Task SignInAsync(string email);
     Task SignOutAsync();
-    bool IsAuthenticated();
-    string GetUserId();
+   // bool IsAuthenticated();
+    //string GetUserId();
 }

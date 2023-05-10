@@ -1,20 +1,14 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentNHibernate.AspNetCore.Identity;
 using log4net;
 using Microsoft.AspNetCore.Identity;
 using StackOverflow.DAL;
 using StackOverflow.DAL.Entities.Authentication;
-using FluentNHibernate.AspNetCore.Identity;
+using StackOverflow.DAL.NHibernate;
 using StackOverflow.Services;
 using StackOverflow.Services.Authentication;
 using StackOverflow.Web;
-using StackOverflow.DAL.NHibernate;
-using FluentNHibernate.AspNetCore.Identity.Mappings;
-using FluentNHibernate.Cfg.Db;
-using FluentNHibernate.Cfg;
-using Autofac.Core;
-using StackOverflow.DAL.Mapping.Membership;
-using StackOverflow.DAL.Mapping.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,5 +1,8 @@
 ﻿using Autofac;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using StackOverflow.Services.BusinessObjects.Authentication;
+using StackOverflow.Services.Services.Authentication;
 using System.ComponentModel.DataAnnotations;
 
 namespace StackOverflow.Web.Models
@@ -23,10 +26,8 @@ namespace StackOverflow.Web.Models
         public string FirstName { get; set; }
         [Required, Display(Name = "Last Name")]
         public string LastName { get; set; }
-        public string ReturnUrl { get; set; }
-        public IFormFile? Image { get; set; }
-        public string Token { get; set; }
-
+        public string? ReturnUrl { get; set; }
+        private IAccountService _accountService;
         public IList<AuthenticationScheme>? ExternalLogins { get; set; }
 
 
@@ -34,27 +35,34 @@ namespace StackOverflow.Web.Models
         {
         }
 
-        public RegisterModel(IHttpContextAccessor httpContextAccessor)
-            : base(httpContextAccessor)
+        public RegisterModel(IAccountService accountService)
+            : base()
         {
+            _accountService = accountService;
         }
 
         public override void ResolveDependency(ILifetimeScope scope)
         {
             base.ResolveDependency(scope);
+            _accountService = scope.Resolve<IAccountService>();
         }
 
-        //public async Task<IdentityResult> CreateUserAsync()
-        //{
-        //    //var user = new UserRegistration
-        //    //{
-        //    //    FirstName = FirstName,
-        //    //    LastName = LastName,
-        //    //    Email = Email,
-        //    //    Password = Password
-        //    //};
-        //    //return await _accountService.RegisterUserAsync(user);
-        //}
+        public async Task<IdentityResult> CreateUserAsync()
+        {
+            var user = new ApplicationUser
+            {
+                FirstName = FirstName,
+                LastName = LastName,
+                UserName = Email,
+                Email = Email,
+                Password = Password
+            };
+            return await _accountService.CreateUserAsync(user);
+        }
+        public async Task SignInAsync()
+        {
+            await _accountService.SignInAsync(Email);
+        }
 
     }
 }

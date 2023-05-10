@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using StackOverflow.DAL.NHibernate;
 using StackOverflow.Services.Authentication;
-
+using StackOverflow.Services.Services.Authentication;
 
 namespace StackOverflow.Services
 {
@@ -13,7 +13,7 @@ namespace StackOverflow.Services
             //    WithParameter("connectionString", _connectionString).
             //    InstancePerLifetimeScope();
 
-            //builder.RegisterType<ApplicationUserManager>().AsSelf().InstancePerLifetimeScope();
+            builder.RegisterType<AccountService>().As<IAccountService>().InstancePerLifetimeScope();
             base.Load(builder);
         }
     }

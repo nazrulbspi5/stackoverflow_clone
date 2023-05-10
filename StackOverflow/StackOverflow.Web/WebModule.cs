@@ -7,6 +7,8 @@ namespace StackOverflow.Web
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<LoginModel>().AsSelf();
+            builder.RegisterType<RegisterModel>().AsSelf();
             base.Load(builder);
         }
     }

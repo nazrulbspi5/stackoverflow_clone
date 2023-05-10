@@ -1,38 +1,27 @@
-﻿using System.Security.Claims;
-using Autofac;
+﻿using Autofac;
+using AutoMapper;
 
-namespace StackOverflow.Web.Models
+namespace StackOverflow.Web.Models;
+
+public abstract class BaseModel
 {
-    public class BaseModel
+   
+    protected ILifetimeScope _scope = null!;
+
+    public BaseModel()
     {
 
-        private IHttpContextAccessor _httpContextAccessor;
+    }
 
-        protected BaseModel()
-        {
-
-        }
-
-        protected BaseModel(IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-        }
-
-        public virtual void ResolveDependency(ILifetimeScope scope)
-        {
-            _httpContextAccessor = scope.Resolve<IHttpContextAccessor>();
-        }
-
-        protected Guid GetCurrentUserId()
-        {
-            var id = _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return Guid.TryParse(id, out var userId) ? userId : Guid.Empty;
-        }
+    public BaseModel(ILifetimeScope scope)
+    {
        
-        public void ClearSession()
-        {
-            _httpContextAccessor.HttpContext?.Session.Clear();
-        }
-      
+        _scope = scope;
+    }
+
+    public virtual void ResolveDependency(ILifetimeScope scope)
+    {
+        _scope = scope;
+        
     }
 }

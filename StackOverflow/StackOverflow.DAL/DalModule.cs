@@ -7,9 +7,7 @@ namespace StackOverflow.DAL
 {
     public class DalModule:Module
     {
-        //private readonly string _connectionString;
-    
-
+      
         protected override void Load(ContainerBuilder builder)
         {
             //builder.RegisterType<SessionManagerFactory>().AsSelf().

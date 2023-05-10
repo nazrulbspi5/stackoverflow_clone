@@ -7,12 +7,6 @@ namespace StackOverflow.Services
 {
     public class ServiceModule:Module
     {
-    //    private readonly string _connectionString;
-    //    public ServiceModule(string connectionString)
-    //    {
-    //        _connectionString = connectionString;
-    //    }
-
         protected override void Load(ContainerBuilder builder)
         {
             //builder.RegisterType<SessionManagerFactory>().As<ISessionManagerFactory>().

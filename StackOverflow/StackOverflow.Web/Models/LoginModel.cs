@@ -18,9 +18,8 @@ namespace StackOverflow.Web.Models
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
 
-        public string Token { get; set; }
         public IList<AuthenticationScheme>? ExternalLogins { get; set; }
-        public string ReturnUrl { get; set; }
+        public string? ReturnUrl { get; set; }
         private IAccountService _accountService;
         public LoginModel()
         {

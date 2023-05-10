@@ -37,7 +37,15 @@ public class AccountService : IAccountService
 
     public async Task<IdentityResult> CreateUserAsync(ApplicationUserBO user)
     {
-        var userEntity = _mapper.Map<ApplicationUser>(user);
+        //var userEntity = _mapper.Map<ApplicationUser>(user);
+        var userEntity = new ApplicationUser
+        {
+            UserName = user.UserName,
+            Email = user.Email,
+            FirstName = user.FirstName,
+            LastName = user.LastName
+        };
+
         var result = await _userManager.CreateAsync(userEntity, user.Password);
         if (result.Succeeded)
         {
@@ -69,7 +77,7 @@ public class AccountService : IAccountService
 
     public async Task<SignInResult> PasswordSignInAsync(ApplicationUserBO user)
     {
-        return await _signInManager.PasswordSignInAsync(user.Email, user.Password, user.RememberMe,
+        return await _signInManager.PasswordSignInAsync(user.UserName, user.Password, user.RememberMe,
             lockoutOnFailure: false);
     }
 

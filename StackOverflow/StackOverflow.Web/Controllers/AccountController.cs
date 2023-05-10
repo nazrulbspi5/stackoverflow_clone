@@ -113,7 +113,7 @@ namespace StackOverflow.Web.Controllers
                     var result = await model.PasswordSignInAsync();
                     if (result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Question", new { Area = "Admin" });
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {

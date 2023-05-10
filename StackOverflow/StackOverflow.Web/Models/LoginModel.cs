@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
+﻿using Autofac;
+using Microsoft.AspNetCore.Authentication;
+using StackOverflow.Web.Models;
 using System.ComponentModel.DataAnnotations;
-using Autofac;
 
 namespace DevTrack.Web.Models
 {
@@ -33,7 +33,7 @@ namespace DevTrack.Web.Models
         {
             base.ResolveDependency(scope);
         }
-       
+
 
         //public Task<(SignInResult Result, Status Status)> LoginUserAsync()
         //{
@@ -44,6 +44,6 @@ namespace DevTrack.Web.Models
         //{
         //    await _accountService.UserLogoutAsync();
         //}
-       
+
     }
 }
